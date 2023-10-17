@@ -3,6 +3,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 
 public class PizzaGUIFrame extends JFrame
 {
@@ -148,8 +149,9 @@ public class PizzaGUIFrame extends JFrame
     private void createMidPanel()
     {
         midPanel = new JPanel();
-        orderDisplay = new JTextArea(10,100);
-        orderDisplay.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        orderDisplay = new JTextArea(20,100);
+        Font font = new Font("Monospaced", Font.BOLD, 15);
+        orderDisplay.setFont(font);
         orderDisplay.setEditable(false);
         scroller = new JScrollPane(orderDisplay);
         midPanel.add(scroller);
@@ -256,15 +258,30 @@ public class PizzaGUIFrame extends JFrame
             taxedPrice = subtotal * 0.07;
             total = taxedPrice + subtotal;
 
+            Font font = new Font("Monospaced", Font.BOLD, 15);
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            orderDisplay.setFont(font);
+
             res += "===============================================================\n";
-            res += String.format("%-80s %-5s \n",pizzaSizeString + " " + crust ,Double.toString(pizzaSizePrice));
-            res += String.format("%-80s %-5s \n",ingredients ,Double.toString(ingredientsPrice));
-            res += String.format("%-80s %-5s \n","Sub-Total: ",Double.toString(subtotal));
-            res += String.format("%-80s %-5s \n","Tax: ",Double.toString(taxedPrice));
-            res += "--------------------------------------------------------------------------------\n";
-            res += String.format("%-80s %-5s \n","Total: ",Double.toString(total));
+            res += String.format("%-50s $%-5s \n", pizzaSizeString + " " + crust, Double.toString(pizzaSizePrice));
+            res += String.format("%-50s $%-5s \n", ingredients, Double.toString(ingredientsPrice));
+            res += String.format("%-50s $%-5s \n", "Sub-Total:", Double.toString(subtotal));
+            res += String.format("%-50s $%-5s \n", "Tax:", decimalFormat.format(taxedPrice));
+            res += "---------------------------------------------------------------\n";
+            res += String.format("%-50s $%-5s \n", "Total:", Double.toString(total));
 
             orderDisplay.append(res);
+
+//            res += "==========================================================================================\n";
+//            res += String.format("%-80s %-5s \n",pizzaSizeString + " " + crust ,pizzaSizePrice);
+//            res += String.format("%-80s %-5s \n",ingredients ,ingredientsPrice);
+//            res += String.format("%-80s %-5s \n","Sub-Total: ",subtotal);
+//            res += String.format("%-80s %-5s \n","Tax: ",taxedPrice);
+//            res += "-------------------------------------------------------------------------------------------\n";
+//            res += String.format("%-80s %-5s \n","Total: ",total);
+//
+//            orderDisplay.append(res);
+//            System.out.println(res);
         });
         clear = new JButton("Clear");
         clear.addActionListener((ActionEvent ae) ->
